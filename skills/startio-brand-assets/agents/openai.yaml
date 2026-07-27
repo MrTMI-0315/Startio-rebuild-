@@ -1,0 +1,4 @@
+interface:
+  display_name: "Startio Brand Assets"
+  short_description: "Intake, build, or reset Startio vector assets"
+  default_prompt: "Use $startio-brand-assets to verify reference intake, preserve an awaiting-design reset, or build approved Startio SVG sources into validated PNG outputs."

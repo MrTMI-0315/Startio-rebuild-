@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Startio adaptive monochrome icon</title>
+  <desc id="desc">Padded one-color Startio symbol for Android themed icons.</desc>
+  <g transform="translate(237 229) scale(.54)">
+    <path
+      fill="#000000"
+      d="M742 164c-76-44-174-54-264-27-123 37-206 120-206 224 0 102 70 164 176 222l142 78c54 30 78 65 66 106-14 49-73 79-135 73-82-8-151-54-215-130l-88 79c78 119 190 180 321 176 154-5 275-88 286-211 10-106-53-185-155-241l-151-83c-49-27-70-57-62-90 10-40 62-63 115-60 71 4 131 39 184 94l72-76V133l-76 31Z"
+    />
+  </g>
+</svg>

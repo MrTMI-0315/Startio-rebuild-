@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-27T05:36:34.689Z",
+  "renderer": "sharp 0.35.3 / libvips 8.18.3",
+  "state": "awaiting-design",
+  "summary": {
+    "svgSources": 0,
+    "manifests": 0,
+    "generatedPngs": 0,
+    "checks": 25,
+    "passed": 25,
+    "failed": 0,
+    "dimensionValidation": true,
+    "alphaValidation": true,
+    "fileFormatValidation": true
+  },
+  "manualReview": [],
+  "checks": [
+    {
+      "name": "assets/brand/ci: directory retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/ci"
+    },
+    {
+      "name": "assets/brand/header: directory retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/header"
+    },
+    {
+      "name": "assets/app-icon: directory retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/app-icon"
+    },
+    {
+      "name": "assets/icons/custom: directory retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/icons/custom"
+    },
+    {
+      "name": "reference category primary: exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/primary"
+    },
+    {
+      "name": "reference category structural: exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/structural"
+    },
+    {
+      "name": "reference category form: exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/form"
+    },
+    {
+      "name": "reference category usage: exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/usage"
+    },
+    {
+      "name": "docs/reference/design/startio-ci-concepts-v0.1.svg: source retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/docs/reference/design/startio-ci-concepts-v0.1.svg"
+    },
+    {
+      "name": "assets/brand/references/primary/startio-ci-concepts-v0.1.svg: intake copy exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/primary/startio-ci-concepts-v0.1.svg"
+    },
+    {
+      "name": "assets/brand/references/primary/startio-ci-concepts-v0.1.svg: byte-identical copy",
+      "passed": true,
+      "details": {
+        "sourceHash": "73bdafca7efe5c9809e053fa4178f476aad454948161fb35773babca1986334a",
+        "copyHash": "73bdafca7efe5c9809e053fa4178f476aad454948161fb35773babca1986334a"
+      }
+    },
+    {
+      "name": "docs/reference/design/reference-evidence-matrix-2026-07-23.md: source retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/docs/reference/design/reference-evidence-matrix-2026-07-23.md"
+    },
+    {
+      "name": "assets/brand/references/structural/reference-evidence-matrix-2026-07-23.md: intake copy exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/structural/reference-evidence-matrix-2026-07-23.md"
+    },
+    {
+      "name": "assets/brand/references/structural/reference-evidence-matrix-2026-07-23.md: byte-identical copy",
+      "passed": true,
+      "details": {
+        "sourceHash": "e20d5e1d8e2555df31d9c49533710f43d477e1bf3f7ac8bde66029b20fd505cc",
+        "copyHash": "e20d5e1d8e2555df31d9c49533710f43d477e1bf3f7ac8bde66029b20fd505cc"
+      }
+    },
+    {
+      "name": "assets/brand/product/startio/startio-ci-source.png: source retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/product/startio/startio-ci-source.png"
+    },
+    {
+      "name": "assets/brand/references/form/startio-ci-source.png: intake copy exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/form/startio-ci-source.png"
+    },
+    {
+      "name": "assets/brand/references/form/startio-ci-source.png: byte-identical copy",
+      "passed": true,
+      "details": {
+        "sourceHash": "0cbede0b232a476d4dfd86033ca71ca31532836e77565f0fa5ea91b26bbbf119",
+        "copyHash": "0cbede0b232a476d4dfd86033ca71ca31532836e77565f0fa5ea91b26bbbf119"
+      }
+    },
+    {
+      "name": "docs/reference/design/startio-ci-placement-v0.1.md: source retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/docs/reference/design/startio-ci-placement-v0.1.md"
+    },
+    {
+      "name": "assets/brand/references/usage/startio-ci-placement-v0.1.md: intake copy exists",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/assets/brand/references/usage/startio-ci-placement-v0.1.md"
+    },
+    {
+      "name": "assets/brand/references/usage/startio-ci-placement-v0.1.md: byte-identical copy",
+      "passed": true,
+      "details": {
+        "sourceHash": "fde99fb9caacbb2fc9d4593313ce1be6c9ce79df72bc4487bcc3f3b4af3f8ada",
+        "copyHash": "fde99fb9caacbb2fc9d4593313ce1be6c9ce79df72bc4487bcc3f3b4af3f8ada"
+      }
+    },
+    {
+      "name": "apps/mobile/app.json: retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/apps/mobile/app.json"
+    },
+    {
+      "name": "app integration asset ./assets/images/icon.png: retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/apps/mobile/assets/images/icon.png"
+    },
+    {
+      "name": "app integration asset ./assets/images/icon.png: retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/apps/mobile/assets/images/icon.png"
+    },
+    {
+      "name": "app integration asset ./assets/images/android-icon-foreground.png: retained",
+      "passed": true,
+      "details": "/Users/mrtmi/Desktop/Mr_TMI/repos/startio-rebuild/apps/mobile/assets/images/android-icon-foreground.png"
+    },
+    {
+      "name": "active brand asset state: clean",
+      "passed": true,
+      "details": {
+        "svgSources": 0,
+        "manifests": 0,
+        "generatedPngs": 0
+      }
+    }
+  ]
+}

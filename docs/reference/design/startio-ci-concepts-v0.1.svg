@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1920" viewBox="0 0 1920 1920">
+  <defs>
+    <style>
+      .ink { fill: #231F1C; }
+      .secondary { fill: #6E6862; }
+      .accent { fill: #EBA16E; }
+      .focus { fill: #A75322; }
+      .surface { fill: #FFFFFF; }
+      .border { stroke: #DED8D2; }
+      .title { font: 700 30px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; }
+      .label { font: 700 22px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; }
+      .body { font: 500 18px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; }
+      .wordmark { font: 750 30px -apple-system, BlinkMacSystemFont, "SF Pro Rounded", sans-serif; letter-spacing: -0.8px; }
+      .phone-title { font: 750 26px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; }
+      .phone-body { font: 500 17px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; }
+    </style>
+    <filter id="phoneShadow" x="-30%" y="-20%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#42352C" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#EEE9E4"/>
+  <text x="72" y="74" class="title ink">STARTIO CI · 72×72pt LOWER-LEFT STUDY</text>
+  <text x="72" y="112" class="body secondary">390×844pt iOS canvas · Warm paper / ink / apricot · four vector-ready directions</text>
+
+  <!-- A -->
+  <g transform="translate(250 160)">
+    <rect width="420" height="850" rx="44" class="surface" filter="url(#phoneShadow)"/>
+    <text x="28" y="46" class="label focus">A · FIRST STEP</text>
+    <text x="28" y="77" class="body secondary">작은 블록이 한 칸 앞으로</text>
+    <text x="28" y="146" class="phone-title ink">지금 막힌 일</text>
+    <rect x="28" y="182" width="364" height="146" rx="22" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+    <text x="52" y="225" class="phone-body secondary">막히는 일을 적어보세요</text>
+    <rect x="28" y="350" width="364" height="58" rx="16" fill="#E8DED6"/>
+    <text x="210" y="387" text-anchor="middle" class="body secondary" font-weight="700">첫 행동 만들기</text>
+    <g transform="translate(28 728)">
+      <rect width="72" height="72" rx="20" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+      <rect x="14" y="42" width="18" height="18" rx="6" fill="#D9D1CA"/>
+      <rect x="40" y="14" width="20" height="20" rx="7" fill="#EBA16E"/>
+      <path d="M29 44 L43 30" fill="none" stroke="#A75322" stroke-width="3" stroke-linecap="round"/>
+      <text x="90" y="48" class="wordmark ink">startio</text>
+    </g>
+    <text x="28" y="824" class="body secondary">movement · micro-start · recommended</text>
+  </g>
+
+  <!-- B -->
+  <g transform="translate(1250 160)">
+    <rect width="420" height="850" rx="44" class="surface" filter="url(#phoneShadow)"/>
+    <text x="28" y="46" class="label focus">B · OPEN START</text>
+    <text x="28" y="77" class="body secondary">닫힌 프레임이 열리는 순간</text>
+    <text x="28" y="146" class="phone-title ink">지금 막힌 일</text>
+    <rect x="28" y="182" width="364" height="146" rx="22" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+    <text x="52" y="225" class="phone-body secondary">막히는 일을 적어보세요</text>
+    <rect x="28" y="350" width="364" height="58" rx="16" fill="#E8DED6"/>
+    <text x="210" y="387" text-anchor="middle" class="body secondary" font-weight="700">첫 행동 만들기</text>
+    <g transform="translate(28 728)">
+      <rect width="72" height="72" rx="20" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+      <path d="M46 15 H31 C22 15 16 22 16 31 V45 C16 54 22 59 31 59 H46"
+            fill="none" stroke="#231F1C" stroke-width="7" stroke-linecap="round"/>
+      <rect x="48" y="25" width="12" height="22" rx="6" fill="#EBA16E"/>
+      <text x="90" y="48" class="wordmark ink">startio</text>
+    </g>
+    <text x="28" y="824" class="body secondary">release · openness · calm confidence</text>
+  </g>
+
+  <!-- C -->
+  <g transform="translate(250 1020)">
+    <rect width="420" height="850" rx="44" class="surface" filter="url(#phoneShadow)"/>
+    <text x="28" y="46" class="label focus">C · THREE STEPS</text>
+    <text x="28" y="77" class="body secondary">정확한 3단계 실행 계약</text>
+    <text x="28" y="146" class="phone-title ink">지금 막힌 일</text>
+    <rect x="28" y="182" width="364" height="146" rx="22" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+    <text x="52" y="225" class="phone-body secondary">막히는 일을 적어보세요</text>
+    <rect x="28" y="350" width="364" height="58" rx="16" fill="#E8DED6"/>
+    <text x="210" y="387" text-anchor="middle" class="body secondary" font-weight="700">첫 행동 만들기</text>
+    <g transform="translate(28 728)">
+      <rect width="72" height="72" rx="20" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+      <rect x="14" y="43" width="14" height="15" rx="5" fill="#D9D1CA"/>
+      <rect x="29" y="31" width="14" height="27" rx="5" fill="#C4BBB3"/>
+      <rect x="44" y="16" width="14" height="42" rx="5" fill="#EBA16E"/>
+      <text x="90" y="48" class="wordmark ink">startio</text>
+    </g>
+    <text x="28" y="824" class="body secondary">product truth · progress · more literal</text>
+  </g>
+
+  <!-- D -->
+  <g transform="translate(1250 1020)">
+    <rect width="420" height="850" rx="44" class="surface" filter="url(#phoneShadow)"/>
+    <text x="28" y="46" class="label focus">D · START POINT</text>
+    <text x="28" y="77" class="body secondary">열린 코너와 분명한 시작점</text>
+    <text x="28" y="146" class="phone-title ink">지금 막힌 일</text>
+    <rect x="28" y="182" width="364" height="146" rx="22" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+    <text x="52" y="225" class="phone-body secondary">막히는 일을 적어보세요</text>
+    <rect x="28" y="350" width="364" height="58" rx="16" fill="#E8DED6"/>
+    <text x="210" y="387" text-anchor="middle" class="body secondary" font-weight="700">첫 행동 만들기</text>
+    <g transform="translate(28 728)">
+      <rect width="72" height="72" rx="20" fill="#FFFFFF" stroke="#DED8D2" stroke-width="2"/>
+      <path d="M15 30 V19 C15 17 17 15 19 15 H30 M42 15 H53 C55 15 57 17 57 19 V30 M57 42 V53 C57 55 55 57 53 57 H42 M30 57 H19 C17 57 15 55 15 53 V42"
+            fill="none" stroke="#231F1C" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="36" cy="36" r="10" fill="#EBA16E"/>
+      <text x="90" y="48" class="wordmark ink">startio</text>
+    </g>
+    <text x="28" y="824" class="body secondary">precision · focus · slightly technical</text>
+  </g>
+</svg>

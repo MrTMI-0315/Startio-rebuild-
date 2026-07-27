@@ -1,0 +1,28 @@
+{
+  "name": "startio-rebuild",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "packageManager": "npm@11.11.0",
+  "workspaces": [
+    "apps/mobile"
+  ],
+  "overrides": {
+    "expo": "55.0.28"
+  },
+  "devDependencies": {
+    "expo": "55.0.28",
+    "sharp": "^0.35.3"
+  },
+  "scripts": {
+    "assets:build": "node scripts/build-brand-assets.mjs",
+    "assets:contact-sheet": "node scripts/generate-brand-contact-sheet.mjs",
+    "assets:validate": "node scripts/validate-brand-assets.mjs",
+    "mobile:start": "npm --workspace @startio/mobile run start",
+    "mobile:ios": "npm --workspace @startio/mobile run ios",
+    "mobile:android": "npm --workspace @startio/mobile run android",
+    "typecheck": "npm --workspace @startio/mobile run typecheck"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@startio/mobile",
+  "main": "expo-router/entry",
+  "version": "0.0.0",
+  "dependencies": {
+    "@expo-google-fonts/noto-sans-kr": "^0.4.3",
+    "@expo-google-fonts/noto-serif": "^0.4.2",
+    "expo": "55.0.28",
+    "expo-constants": "~55.0.17",
+    "expo-dev-client": "~55.0.37",
+    "expo-file-system": "~55.0.24",
+    "expo-font": "~55.0.8",
+    "expo-haptics": "~55.0.16",
+    "expo-image-picker": "~55.0.22",
+    "expo-linking": "~55.0.16",
+    "expo-router": "~55.0.17",
+    "expo-splash-screen": "~55.0.23",
+    "expo-status-bar": "~55.0.6",
+    "expo-system-ui": "~55.0.20",
+    "react": "19.2.0",
+    "react-native": "0.83.10",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.23.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "typescript": "~5.9.2"
+  },
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "typecheck": "tsc --noEmit"
+  },
+  "private": true
+}
