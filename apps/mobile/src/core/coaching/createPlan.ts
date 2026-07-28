@@ -1,9 +1,19 @@
 import { createFallbackPlan } from './fallback.ts';
 import { validateTaskInput } from './input.ts';
+import {
+  createV02LocalPlan,
+  DEFAULT_LOCAL_COACHING_POLICY_VERSION,
+  type LocalCoachingPolicyVersion,
+} from './localChunkingEngine.ts';
 import type { PlanResult } from './result.ts';
 import { classifySafety } from './safety.ts';
 
-export function createLocalPlan(rawInput: string): PlanResult {
+export function createLocalPlan(
+  rawInput: string,
+  options: {
+    policyVersion?: LocalCoachingPolicyVersion;
+  } = {},
+): PlanResult {
   const validation = validateTaskInput(rawInput);
 
   if (!validation.isValid) {
@@ -15,5 +25,10 @@ export function createLocalPlan(rawInput: string): PlanResult {
     return safeRedirect;
   }
 
-  return createFallbackPlan(validation.value);
+  const policyVersion =
+    options.policyVersion ?? DEFAULT_LOCAL_COACHING_POLICY_VERSION;
+
+  return policyVersion === 'local_chunking_policy_v0.1'
+    ? createFallbackPlan(validation.value)
+    : createV02LocalPlan(validation.value);
 }

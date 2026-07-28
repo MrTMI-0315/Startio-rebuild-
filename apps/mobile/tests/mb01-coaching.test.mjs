@@ -74,7 +74,7 @@ test('allowed input always creates exactly three ordered steps', () => {
   assert.equal(result.doNotChunk, false);
 });
 
-test('local fallback uses task-specific plain-language steps', () => {
+test('local policy uses task-specific plain-language steps', () => {
   assert.equal(inferTaskCategory('방 청소 시작하기'), 'cleaning');
   assert.equal(inferTaskCategory('발표 자료 쓰기'), 'writing');
 
@@ -88,14 +88,14 @@ test('local fallback uses task-specific plain-language steps', () => {
   assert.deepEqual(
     result.plan.steps.map((step) => step.action),
     [
-      '치울 곳 한 군데 정하기',
-      '눈에 띄는 물건 하나 제자리 놓기',
-      '같은 종류 물건 세 개 한곳에 모으기',
+      '치울 곳을 손으로 한 번 짚기',
+      '손 닿는 범위 한 곳만 표시하기',
+      '물건 하나 제자리에 놓기',
     ],
   );
   assert.equal(
     result.plan.steps[2].completionCondition,
-    '물건 세 개가 한곳에 모이면 끝',
+    '물건 하나가 제자리에 놓이면 끝',
   );
   assert.equal(
     result.plan.steps.every((step) => step.completionCondition.endsWith('끝')),

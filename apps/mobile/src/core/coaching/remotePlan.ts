@@ -1,8 +1,8 @@
 import {
-  createFallbackPlan,
   createPlanId,
   createStep,
 } from './fallback.ts';
+import { createLocalPlan } from './createPlan.ts';
 import { validateTaskInput } from './input.ts';
 import type {
   ActionPlan,
@@ -242,7 +242,7 @@ export async function resolvePlan(input: {
 
   if (input.consentDecision !== 'accepted' || input.client === null) {
     return {
-      result: createFallbackPlan(validation.value),
+      result: createLocalPlan(validation.value),
       remoteAttempted: false,
     };
   }
@@ -262,7 +262,7 @@ export async function resolvePlan(input: {
     const remoteResult = parseRemotePlan(remoteValue);
     if (!remoteResult) {
       return {
-        result: createFallbackPlan(validation.value),
+        result: createLocalPlan(validation.value),
         remoteAttempted: true,
         failure: 'api_error',
       };
@@ -270,7 +270,7 @@ export async function resolvePlan(input: {
     return { result: remoteResult, remoteAttempted: true };
   } catch {
     return {
-      result: createFallbackPlan(validation.value),
+      result: createLocalPlan(validation.value),
       remoteAttempted: true,
       failure: didTimeout ? 'remote_timeout' : 'api_error',
     };

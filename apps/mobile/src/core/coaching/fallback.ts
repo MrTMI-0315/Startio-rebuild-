@@ -107,9 +107,22 @@ export function createStep(
 }
 
 export function createFallbackPlan(taskTitle: string): PlanAllowed {
+  return createFallbackPlanForCategory(
+    taskTitle,
+    inferTaskCategory(taskTitle),
+  );
+}
+
+export function createGeneralFallbackPlan(taskTitle: string): PlanAllowed {
+  return createFallbackPlanForCategory(taskTitle, 'general');
+}
+
+function createFallbackPlanForCategory(
+  taskTitle: string,
+  taskCategory: TaskCategory,
+): PlanAllowed {
   const taskId = createPlanId('task');
   const planId = `plan_${taskId}`;
-  const taskCategory = inferTaskCategory(taskTitle);
   const stepTemplates = FALLBACK_STEPS[taskCategory];
   const steps = stepTemplates.map((template, index) =>
     createStep(

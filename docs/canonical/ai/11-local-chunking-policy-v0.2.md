@@ -139,8 +139,25 @@ raw task text는 analytics, behavior event export, descriptor, fixture 결과
 파일에 저장하지 않는다. `behavior_event_v0.1` 필드는 이 정책을 위해
 확장하지 않는다.
 
-## 7. 변경 경계
+## 7. 구현 경계
 
-MB-25A는 문서와 TypeScript 계약만 고정한다. 실제 로컬 선택 결과는
-MB-25B에서 policy version 경계 뒤에 연결한다. MB-25C는 실제 한국어 fixture와
-golden 비교 보고서로 이 계약을 검증한다.
+MB-25A는 문서와 TypeScript 계약을 고정했다. MB-25B는 다음 순수 함수 경계를
+`local_chunking_policy_v0.2` 기본 policy 뒤에 연결한다.
+
+```text
+normalizeInput
+classifySafety
+extractLimitedTaskSignals
+classifyBarrier
+generateCandidatePlans
+validatePlanCandidate
+scorePlanCandidate
+selectBestCandidate
+```
+
+`local_chunking_policy_v0.1`은 명시적 호환 경계로 남아 회귀 비교에 사용할 수
+있다. 로컬 v0.2의 낮은 confidence 또는 유효 후보 부재는 기존 검증된
+`general + unknown` fallback으로 돌아간다.
+
+MB-25C는 실제 한국어 fixture와 golden 비교 보고서로 이 계약과 초기
+가중치를 검증한다.

@@ -117,3 +117,9 @@ export interface LocalChunkingDescriptor {
   stepPrimitives: readonly ActionPrimitive[];
   fallbackUsed: boolean;
 }
+
+export interface EvaluatedPlanCandidate {
+  candidate: PlanCandidate;
+  gate: PlanGateResult;
+  score: PlanScoreBreakdown | null;
+}
