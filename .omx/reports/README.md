@@ -15,6 +15,7 @@
 
 | 날짜 | 제품 범위 | 비교 기준 | 상태 | 보고서 |
 | --- | --- | --- | --- | --- |
+| 2026-07-28 | MB-25C 한국어 품질 fixture·golden 비교 | `54912b4` → working tree | 자동 검증 완료·실기기 대기 | [HTML](./2026-07-28-mb25c-chunking-quality-fixtures.html) |
 | 2026-07-28 | MB-25B 결정론적 로컬 Chunking Engine v0.2 | `9d32190` → working tree | 자동 검증 완료 | [HTML](./2026-07-28-mb25b-local-chunking-engine.html) |
 | 2026-07-28 | MB-25A 로컬 Chunking 품질 계약 | `abd6174` → working tree | 계약·자동 검증 완료 | [HTML](./2026-07-28-mb25a-chunking-contract.html) |
 | 2026-07-28 | MB-24 타이머 남은 시간 의미와 상태 위계 | `8343cf8` → working tree | 자동 검증 완료·실기기 시각 미검증 | [HTML](./2026-07-28-mb24-timer-remaining-time.html) |

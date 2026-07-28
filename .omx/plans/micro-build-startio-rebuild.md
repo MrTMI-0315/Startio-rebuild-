@@ -5,8 +5,8 @@
 - source_revision: 8343cf8
 - authority: canonical 문서를 실제 제품 수직 기능으로 분해한 실행 보조 계획
 - supersedes: 2026-07-23의 MB-01~MB-28 기반·화면 분리 계획
-- current_checkpoint: 기준 revision `9d32190` 위에서 MB-25B 결정론적 로컬 chunking engine v0.2를 구현했다. 정규화·안전 선판정·제한 신호·장벽 분류·2~3개 후보 생성·Hard Gate·고정 점수·선택을 순수 함수로 분리하고, 낮은 confidence는 기존 general fallback으로 돌렸다. 원격 요청·consent·8초 timeout·validator와 behavior event 필드는 변경하지 않았다.
-- next_build: MB-25B를 별도 commit·push하고 MB-25C의 실제 한국어 30~50개 fixture와 golden 비교 보고서를 구현한다. MB-25 전체 뒤 물리 iPhone Smoke가 통과해야 MB-26 월간 탐색기를 시작한다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
+- current_checkpoint: 기준 revision `54912b4` 위에서 MB-25C 품질 fixture suite를 구현했다. 6개 BarrierType별 6개씩 36개 계획 입력과 4개 안전 입력을 검증하고, 12개 golden 입력의 v0.1·v0.2 후보 Gate·score·선택·한계를 비교 보고서로 남겼다. fixture가 드러낸 한국어 활용형 cue, 발표자료 디자인 target, 숨은 선택, 안전 진단 표현 경계를 보정했다.
+- next_build: MB-25C를 별도 commit·push한 뒤 물리 iPhone에서 MB-24 타이머 시각·lifecycle과 기존 P0 카메라·햅틱·appearance Smoke를 수행한다. 이 Smoke가 통과하기 전에는 MB-26 월간 탐색기를 시작하지 않는다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
 - open_questions: 실제 iPhone에서 선택 사진 진입과 촬영·삭제가 자연스러운가; 단계별 햅틱과 화면 모드 유지가 Release 빌드에서 재현되는가; 원격 계획의 실제 응답도 새 단일 행동 경계를 안정적으로 통과하는가; iPhone 13 mini·큰 글자 조합에서 완료 화면 밀도가 유지되는가; Android 360×800·TalkBack 검증을 언제 재개할 것인가.
 
 ## 1. 재계획 결론
@@ -748,7 +748,7 @@ P0 코드 누락은 현재 대조에서 발견되지 않았고, 카메라·햅�
 - 원격 계획 경로·consent gate·8초 timeout·remote validator와 15/60/120초
   정책은 변경하지 않는다.
 
-### MB-25C. Quality Fixture Suite
+### MB-25C. Quality Fixture Suite — 완료
 
 - 실제 한국어 입력 30~50개를 추가하고 각 BarrierType을 최소 5개 포함한다.
 - 구조 계약, 역할 순서, 관찰 가능성, 중복·모호 동사 부재, timer 정책,

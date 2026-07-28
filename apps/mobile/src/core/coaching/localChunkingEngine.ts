@@ -47,6 +47,7 @@ type TargetKind =
   | 'conversation'
   | 'schedule'
   | 'body'
+  | 'presentation_design'
   | 'generic';
 
 export interface LimitedTaskSignals {
@@ -96,8 +97,8 @@ const BARRIER_PATTERNS: Readonly<
     /못\s*보내/,
   ],
   choice_paralysis: [
-    /(?:고르|선택).*(?:어렵|못|모르)/,
-    /뭘?\s*(?:고르|선택)/,
+    /(?:고르|고를|선택).*(?:어렵|어려|못|모르)/,
+    /(?:뭘|뭐를?|무엇을?)\s*(?:고르|고를|선택)/,
     /어느.*(?:좋|나을)/,
     /디자인.*(?:고르|선택)/,
   ],
@@ -120,8 +121,8 @@ const BARRIER_PATTERNS: Readonly<
   activation_low: [
     /귀찮/,
     /몸이\s*안\s*움직/,
-    /하기\s*싫/,
-    /손이\s*안\s*가/,
+    /하기(?:가)?\s*(?:너무\s*)?싫/,
+    /손이\s*안\s*(?:가|감)/,
     /미루/,
     /움직이기\s*싫/,
   ],
@@ -152,7 +153,7 @@ const TASK_PROFILES: Readonly<Record<TaskCategory, TaskProfile>> = {
     restore: ['자료에서 마지막으로 본 위치 열기', '마지막으로 본 위치가 보이면 끝'],
     select: ['지금 볼 소제목 하나 고르기', '소제목 하나를 고르면 끝'],
     reduce: ['읽을 문단 하나에 표시하기', '문단 하나를 표시하면 끝'],
-    create: ['표시한 문단의 핵심 한 줄 적기', '핵심 한 줄이 적히면 끝'],
+    create: ['첫 문단의 핵심 한 줄 적기', '핵심 한 줄이 적히면 끝'],
     mark: ['다음에 볼 문단에 표시 남기기', '다음 문단에 표시가 생기면 끝'],
   },
   administrative: {
@@ -184,7 +185,7 @@ const TASK_PROFILES: Readonly<Record<TaskCategory, TaskProfile>> = {
     restore: ['마지막 계획 메모 위치 열기', '마지막 메모가 보이면 끝'],
     select: ['가장 먼저 다룰 일 하나 고르기', '일 하나를 고르면 끝'],
     reduce: ['가장 작은 일 하나를 한 번의 행동으로 줄여 적기', '한 행동이 적히면 끝'],
-    create: ['적은 행동의 시작 시각 하나 적기', '시작 시각 하나가 적히면 끝'],
+    create: ['시작 시각 하나 적기', '시작 시각 하나가 적히면 끝'],
     mark: ['다음에 정할 일에 표시 남기기', '다음 일에 표시가 생기면 끝'],
   },
   physical_action: {
@@ -200,8 +201,19 @@ const TASK_PROFILES: Readonly<Record<TaskCategory, TaskProfile>> = {
     restore: ['마지막으로 멈춘 위치 찾기', '마지막 위치가 보이면 끝'],
     select: ['지금 손댈 한 가지 고르기', '한 가지를 고르면 끝'],
     reduce: ['할 일을 한 번의 행동으로 줄여 적기', '한 행동이 적히면 끝'],
-    create: ['적은 행동의 첫 결과 하나 만들기', '첫 결과 하나가 보이면 끝'],
+    create: ['첫 결과 하나 만들기', '첫 결과 하나가 보이면 끝'],
     mark: ['다음에 손댈 위치에 표시 남기기', '다음 위치에 표시가 생기면 끝'],
+  },
+};
+
+const TARGET_PROFILES: Readonly<Partial<Record<TargetKind, TaskProfile>>> = {
+  presentation_design: {
+    open: ['발표 자료의 디자인 화면 열기', '디자인 화면이 열리면 끝'],
+    restore: ['마지막으로 편집한 슬라이드 열기', '마지막 슬라이드가 보이면 끝'],
+    select: ['디자인 후보 하나만 고르기', '디자인 후보 하나를 고르면 끝'],
+    reduce: ['첫 슬라이드 한 장만 적용 범위로 표시하기', '슬라이드 한 장을 표시하면 끝'],
+    create: ['고른 디자인을 첫 슬라이드에 적용하기', '첫 슬라이드 디자인이 바뀌면 끝'],
+    mark: ['다음에 디자인할 슬라이드에 표시 남기기', '다음 슬라이드에 표시가 생기면 끝'],
   },
 };
 
@@ -293,7 +305,7 @@ export function extractLimitedTaskSignals(
 ): LimitedTaskSignals {
   const inferredCategory = inferTaskCategory(normalizedInput);
   const taskCategory =
-    /연구\s*계획서|이력서|발표\s*자료|논문\s*(?:쓰|써)|이메일/.test(
+    /연구\s*계획서|이력서|발표\s*자료|논문(?!\s*읽)|이메일/.test(
       normalizedInput,
     )
       ? /이메일/.test(normalizedInput)
@@ -306,7 +318,11 @@ export function extractLimitedTaskSignals(
 
   return {
     taskCategory,
-    targetKind: TARGET_KIND_BY_CATEGORY[taskCategory],
+    targetKind: /발표\s*자료.*디자인|발표자료.*디자인/.test(
+      normalizedInput,
+    )
+      ? 'presentation_design'
+      : TARGET_KIND_BY_CATEGORY[taskCategory],
     barrierCueCount,
   };
 }
@@ -346,7 +362,9 @@ export function generateCandidatePlans(
   signals: LimitedTaskSignals,
   barrierType: BarrierType,
 ): readonly PlanCandidate[] {
-  const profile = TASK_PROFILES[signals.taskCategory];
+  const profile =
+    TARGET_PROFILES[signals.targetKind] ??
+    TASK_PROFILES[signals.taskCategory];
 
   return STRATEGIES_BY_BARRIER[barrierType].map((strategyName) => {
     const primitives = STRATEGY_PRIMITIVES[strategyName];
@@ -364,7 +382,7 @@ export function generateCandidatePlans(
 function hasObservableCompletion(step: PlanStepCandidate): boolean {
   return (
     step.completionCondition.endsWith('끝') &&
-    /보이|열리|고르|표시|적히|생기|채워|놓이|나오|입력|정해|마치|짚|찾|만들|줄|꺼내|손에\s*닿/.test(
+    /보이|열리|고르|표시|적히|생기|채워|놓이|나오|입력|정해|마치|짚|찾|만들|줄|꺼내|바뀌|손에\s*닿/.test(
       step.completionCondition,
     )
   );

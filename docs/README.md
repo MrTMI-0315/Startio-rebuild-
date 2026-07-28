@@ -36,4 +36,9 @@
 
 이 계획들은 현재 경로와 결정 상태에 맞게 정규화한 보조 문서다. 범위·일정·안전·데이터 계약은 canonical 문서가 우선한다.
 
+## 검증 보고서
+
+- `release/2026-07-28-local-chunking-golden-v0.2.md`: 36개 품질 fixture와
+  12개 golden 입력의 v0.1·v0.2 비교
+
 기준 문서가 충돌하면 더 높은 우선순위와 더 최근의 모바일 V1 결정을 따른다. 시각 방향과 토큰 승인 상태는 `canonical/product/10-visual-direction-2026-07-23.md`를 적용하며 기능·안전·개인정보 계약은 기존 영역별 canonical 문서를 유지한다.
