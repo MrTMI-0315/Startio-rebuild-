@@ -175,6 +175,24 @@ test('malformed steps and invalid enums reject the entire remote response', () =
   );
 });
 
+test('abstract or bundled remote actions fall back instead of reaching the plan screen', () => {
+  const abstractPlan = validRemotePlan({
+    steps: validRemotePlan().steps.map((step, index) =>
+      index === 1 ? { ...step, action: '발표 방향 고민하기' } : step
+    ),
+  });
+  const bundledPlan = validRemotePlan({
+    steps: validRemotePlan().steps.map((step, index) =>
+      index === 2
+        ? { ...step, action: '제목을 적고 본문을 쓰기' }
+        : step
+    ),
+  });
+
+  assert.equal(parseRemotePlan(abstractPlan), null);
+  assert.equal(parseRemotePlan(bundledPlan), null);
+});
+
 test('HTTP adapter rejects non-2xx without trusting the response body', async () => {
   let sentBody = null;
   const client = createHttpPlanClient({

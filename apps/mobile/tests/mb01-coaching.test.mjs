@@ -90,13 +90,48 @@ test('local fallback uses task-specific plain-language steps', () => {
     [
       '치울 곳 한 군데 정하기',
       '눈에 띄는 물건 하나 제자리 놓기',
-      '같은 종류만 모아 정리하기',
+      '같은 종류 물건 세 개 한곳에 모으기',
     ],
+  );
+  assert.equal(
+    result.plan.steps[2].completionCondition,
+    '물건 세 개가 한곳에 모이면 끝',
   );
   assert.equal(
     result.plan.steps.every((step) => step.completionCondition.endsWith('끝')),
     true,
   );
+});
+
+test('fallback actions stay short, singular, and independently testable', () => {
+  const inputs = [
+    '발표 자료 쓰기',
+    '시험 공부하기',
+    '신청서 제출하기',
+    '방 청소하기',
+    '답장 보내기',
+    '이번 주 일정 계획하기',
+    '스트레칭하기',
+    '미루던 일 시작하기',
+  ];
+
+  for (const input of inputs) {
+    const result = createLocalPlan(input);
+    assert.equal(result.kind, 'plan_allowed');
+    if (result.kind !== 'plan_allowed') {
+      continue;
+    }
+
+    assert.equal(new Set(result.plan.steps.map((step) => step.action)).size, 3);
+    for (const step of result.plan.steps) {
+      assert.equal(step.action.length <= 44, true);
+      assert.doesNotMatch(
+        step.action,
+        /그리고|그다음|한 뒤|후에|동시에|\S+(?:고|해서)\s+\S+/,
+      );
+      assert.equal(step.completionCondition.endsWith('끝'), true);
+    }
+  }
 });
 
 test('safe redirect does not append task or plan events', () => {

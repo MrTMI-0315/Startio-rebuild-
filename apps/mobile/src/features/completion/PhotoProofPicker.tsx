@@ -81,6 +81,10 @@ export function PhotoProofPicker({
 
   return (
     <View style={styles.container}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>사진 추가</Text>
+        <Text style={styles.optionalLabel}>선택 사항</Text>
+      </View>
       {value ? (
         <View style={styles.previewRow}>
           <Image
@@ -142,7 +146,7 @@ export function PhotoProofPicker({
                 {pickingSource === 'camera' ? '카메라 여는 중…' : '사진으로 남기기'}
               </Text>
               <Text style={styles.addDescription}>
-                완료한 모습을 찍어 이 기기에만 남겨요
+                촬영하면 이 기기에만 저장돼요
               </Text>
             </View>
           </Pressable>
@@ -177,6 +181,22 @@ function createStyles(tokens: ThemeTokens) {
   return StyleSheet.create({
     container: {
       gap: tokens.spacing.xs,
+    },
+    sectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: tokens.spacing.xs,
+      marginBottom: tokens.spacing.xxs,
+    },
+    sectionTitle: {
+      color: tokens.colors.textPrimary,
+      fontFamily: tokens.font.uiSemiBold,
+      fontSize: tokens.type.label,
+    },
+    optionalLabel: {
+      color: tokens.colors.textSecondary,
+      fontFamily: tokens.font.uiRegular,
+      fontSize: tokens.type.caption,
     },
     addButton: {
       minHeight: 60,

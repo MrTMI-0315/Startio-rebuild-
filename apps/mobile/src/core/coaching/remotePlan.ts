@@ -40,6 +40,26 @@ const SAFE_REDIRECT_REASONS = new Set<SafeRedirectReason>([
   'crisis_or_self_harm',
   'dangerous_or_illegal_request',
 ]);
+const ABSTRACT_ACTION_PATTERNS = [
+  /생각/,
+  /고민/,
+  /정리해보기/,
+  /잘하기/,
+  /완성/,
+  /이해/,
+  /분석/,
+  /준비하기$/,
+];
+const BUNDLED_ACTION_PATTERNS = [
+  /그리고/,
+  /그다음/,
+  /한 뒤/,
+  /후에/,
+  /동시에/,
+  /\S+(?:고|해서)\s+\S+/,
+  /\band then\b/i,
+  /\bafter that\b/i,
+];
 
 export type RemoteFailure = 'remote_timeout' | 'api_error';
 
@@ -108,6 +128,18 @@ function isBoundedText(
   );
 }
 
+function isConcreteAction(value: unknown): value is string {
+  if (!isBoundedText(value, 44)) {
+    return false;
+  }
+
+  const action = value.replace(/\s+/g, ' ').trim();
+  return (
+    !ABSTRACT_ACTION_PATTERNS.some((pattern) => pattern.test(action)) &&
+    !BUNDLED_ACTION_PATTERNS.some((pattern) => pattern.test(action))
+  );
+}
+
 export function parseRemotePlan(value: unknown): PlanResult | null {
   if (!isRecord(value)) {
     return null;
@@ -153,7 +185,7 @@ export function parseRemotePlan(value: unknown): PlanResult | null {
     (step, index) =>
       isRecord(step) &&
       step.step_order === index + 1 &&
-      isBoundedText(step.action, 120) &&
+      isConcreteAction(step.action) &&
       Number.isInteger(step.timer_seconds) &&
       Number(step.timer_seconds) >= 15 &&
       Number(step.timer_seconds) <= 180 &&

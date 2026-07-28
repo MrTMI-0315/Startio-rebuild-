@@ -14,7 +14,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { findCompletionRecord } from '@/core/session/completion';
-import { TASK_COMPLETION_EXP } from '@/core/session/reward';
 import type { ProofPhotoSource } from '@/core/storage/proofFileRepository';
 import { useThemeTokens, type ThemeTokens } from '@/design/tokens';
 import { PhotoProofPicker } from '@/features/completion/PhotoProofPicker';
@@ -57,13 +56,9 @@ export function CompletionScreen() {
   const completionRecord = plan
     ? findCompletionRecord(completionState, plan)
     : null;
-  const plannedMs = plan
-    ? plan.steps.reduce((total, step) => total + step.timerSeconds * 1000, 0)
-    : 0;
   const actualMs = timerState?.stepTimings?.length === 3
     ? timerState.stepTimings.reduce((total, timing) => total + timing.activeMs, 0)
     : null;
-  const varianceMs = actualMs === null ? null : actualMs - plannedMs;
 
   useEffect(() => {
     if (!isHydrated) {
@@ -242,11 +237,7 @@ export function CompletionScreen() {
                   {formatDuration(actualMs)} 동안 실행했어요
                 </Text>
                 <Text style={styles.timingCaption}>
-                  {varianceMs === 0
-                    ? '예상 시간에 맞췄어요'
-                    : varianceMs !== null && varianceMs < 0
-                      ? `예상보다 ${formatDuration(Math.abs(varianceMs))} 빨랐어요`
-                      : `예상보다 ${formatDuration(varianceMs ?? 0)} 더 걸렸어요`}
+                  3단계를 모두 완료했어요
                 </Text>
               </View>
             ) : null}
@@ -302,17 +293,14 @@ export function CompletionScreen() {
             완료를 기록할까요?
           </Text>
           <Text style={styles.description}>
-            실행 시간과 선택한 사진을 이 기기에 저장하고 EXP{' '}
-            {TASK_COMPLETION_EXP}을 받아요.
+            사진 없이도 완료를 저장할 수 있어요.
           </Text>
           {actualMs !== null ? (
             <View style={styles.timingSummary}>
               <Text style={styles.timingValue}>
                 {formatDuration(actualMs)} 동안 실행했어요
               </Text>
-              <Text style={styles.timingCaption}>
-                예상 시간 {formatDuration(plannedMs)}
-              </Text>
+              <Text style={styles.timingCaption}>3단계를 모두 완료했어요</Text>
             </View>
           ) : null}
 
@@ -333,7 +321,7 @@ export function CompletionScreen() {
         </Animated.ScrollView>
 
         <Pressable
-          accessibilityHint="완료 기록과 EXP를 함께 저장합니다."
+          accessibilityHint="사진이 없어도 현재 완료 기록을 저장합니다."
           accessibilityRole="button"
           accessibilityState={{ disabled: isSaving, busy: isSaving }}
           disabled={isSaving}

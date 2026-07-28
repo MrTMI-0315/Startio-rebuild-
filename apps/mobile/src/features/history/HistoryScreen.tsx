@@ -60,12 +60,6 @@ function HistoryRow({
       {record.activeDurationSeconds !== null ? (
         <Text style={styles.latencyText}>
           실행 {formatDuration(record.activeDurationSeconds)}
-          {record.savedSeconds !== null && record.savedSeconds > 0
-            ? ` · 예상보다 ${formatDuration(record.savedSeconds)} 빨랐어요`
-            : ''}
-          {record.overtimeSeconds !== null && record.overtimeSeconds > 0
-            ? ` · 예상보다 ${formatDuration(record.overtimeSeconds)} 더 걸렸어요`
-            : ''}
         </Text>
       ) : null}
       {record.proofPhoto ? <ProofThumbnail photo={record.proofPhoto} /> : null}
