@@ -17,6 +17,7 @@
 - `canonical/product/09-mobile-v1-reset.md`
 - `canonical/product/10-visual-direction-2026-07-23.md`
 - `canonical/ai/04-coaching-engine.md`
+- `canonical/ai/11-local-chunking-policy-v0.2.md`
 - `canonical/data/05-behavior-event-schema.md`
 - `../DESIGN.md`
 

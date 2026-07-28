@@ -5,8 +5,8 @@
 - source_revision: 8343cf8
 - authority: canonical 문서를 실제 제품 수직 기능으로 분해한 실행 보조 계획
 - supersedes: 2026-07-23의 MB-01~MB-28 기반·화면 분리 계획
-- current_checkpoint: 기준 revision `8343cf8` 위에서 MB-24 타이머 시간 지각과 상태 위계를 교정했다. 24개 눈금과 중앙 숫자가 모두 남은 시간을 뜻하고, 실제 단계 시간 CTA·실행 중 완료 CTA·초과 표시를 한 의미 체계로 정리했다. timer duration·상태 머신·timestamp 복구·이벤트·proof·EXP 계약은 변경하지 않았으며 모바일 회귀 테스트 88개와 TypeScript typecheck를 통과했다.
-- next_build: MB-24를 별도 commit·push하고 MB-25A 품질 계약, MB-25B 결정론적 로컬 chunking engine, MB-25C fixture suite를 각각 별도 commit으로 진행한다. MB-25 전체 뒤 물리 iPhone Smoke가 통과해야 MB-26 월간 탐색기를 시작한다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
+- current_checkpoint: 기준 revision `abd6174` 위에서 MB-25A 로컬 chunking 품질 계약을 canonical 문서와 TypeScript 타입으로 고정했다. 로컬 v0.2의 6개 BarrierType, CONTACT → NARROW → PRODUCE, 6개 ActionPrimitive, Hard Gate, 100점 평가와 penalty, privacy-safe descriptor를 정의했다. 기존 v0.1 원격·저장 호환 enum과 런타임 선택 결과는 변경하지 않았다.
+- next_build: MB-25A를 별도 commit·push하고 MB-25B 결정론적 로컬 chunking engine, MB-25C fixture suite를 각각 별도 commit으로 진행한다. MB-25 전체 뒤 물리 iPhone Smoke가 통과해야 MB-26 월간 탐색기를 시작한다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
 - open_questions: 실제 iPhone에서 선택 사진 진입과 촬영·삭제가 자연스러운가; 단계별 햅틱과 화면 모드 유지가 Release 빌드에서 재현되는가; 원격 계획의 실제 응답도 새 단일 행동 경계를 안정적으로 통과하는가; iPhone 13 mini·큰 글자 조합에서 완료 화면 밀도가 유지되는가; Android 360×800·TalkBack 검증을 언제 재개할 것인가.
 
 ## 1. 재계획 결론
@@ -728,7 +728,7 @@ P0 코드 누락은 현재 대조에서 발견되지 않았고, 카메라·햅�
 - Node 회귀 테스트 88개와 TypeScript typecheck는 통과했다. iPhone 13 mini
   실제 화면, background/foreground, Android는 미검증이다.
 
-### MB-25A. Task Chunking Quality Contract
+### MB-25A. Task Chunking Quality Contract — 완료
 
 - `BarrierType`, `StepRole`, `ActionPrimitive`, hard Gate와 고정 평가함수를
   canonical 문서와 TypeScript 타입으로 고정한다.
