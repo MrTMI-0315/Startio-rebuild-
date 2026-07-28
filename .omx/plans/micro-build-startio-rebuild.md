@@ -2,11 +2,11 @@
 
 - status: implementation-plan
 - updated: 2026-07-28
-- source_revision: 34abc7a
+- source_revision: 8343cf8
 - authority: canonical 문서를 실제 제품 수직 기능으로 분해한 실행 보조 계획
 - supersedes: 2026-07-23의 MB-01~MB-28 기반·화면 분리 계획
-- current_checkpoint: 기준 revision `34abc7a` 위에서 실기기 피드백을 MB-21~23으로 분해해 반영했다. 완료·기록의 예정 대비 속도 평가는 사실형 실행 시간으로 교체했고, fallback 행동을 관찰 가능한 단일 행동으로 좁혔으며, 사진은 권한 요청 전부터 선택 사항임을 명시했다. raw timing·멱등 EXP·local-only 사진 계약은 유지했고 모바일 회귀 테스트 85개, TypeScript typecheck, iPhone 16e Simulator Release 빌드·정상 흐름, visual verdict 95점을 통과했다.
-- next_build: MB-21~23을 commit·push한 뒤 물리 iPhone에서 카메라 직접 실행·로컬 저장, 단계별 햅틱, Light·Dark·System 재실행 유지를 다시 Smoke한다. 실기기 결함이 없으면 MB-24 화면 이동 문법, MB-25 기록 밀도 순서로 진행한다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
+- current_checkpoint: 기준 revision `8343cf8` 위에서 MB-24 타이머 시간 지각과 상태 위계를 교정했다. 24개 눈금과 중앙 숫자가 모두 남은 시간을 뜻하고, 실제 단계 시간 CTA·실행 중 완료 CTA·초과 표시를 한 의미 체계로 정리했다. timer duration·상태 머신·timestamp 복구·이벤트·proof·EXP 계약은 변경하지 않았으며 모바일 회귀 테스트 88개와 TypeScript typecheck를 통과했다.
+- next_build: MB-24를 별도 commit·push하고 MB-25A 품질 계약, MB-25B 결정론적 로컬 chunking engine, MB-25C fixture suite를 각각 별도 commit으로 진행한다. MB-25 전체 뒤 물리 iPhone Smoke가 통과해야 MB-26 월간 탐색기를 시작한다. Android 동등성은 별도 재개 지시 전까지 명시적 미검증이다.
 - open_questions: 실제 iPhone에서 선택 사진 진입과 촬영·삭제가 자연스러운가; 단계별 햅틱과 화면 모드 유지가 Release 빌드에서 재현되는가; 원격 계획의 실제 응답도 새 단일 행동 경계를 안정적으로 통과하는가; iPhone 13 mini·큰 글자 조합에서 완료 화면 밀도가 유지되는가; Android 360×800·TalkBack 검증을 언제 재개할 것인가.
 
 ## 1. 재계획 결론
@@ -716,26 +716,59 @@ P0 코드 누락은 현재 대조에서 발견되지 않았고, 카메라·햅�
 - 저장 전 화면에서 EXP를 미끼처럼 약속하지 않고, EXP는 저장 성공 뒤
   결과로만 보여준다.
 
-### MB-24. 화면 이동 문법과 전환
+### MB-24. 타이머 시간 지각 및 상태 위계 교정 — 자동 검증 완료
 
-- 입력 → 계획 → 타이머 → 완료의 진행 방향과 뒤로 가기 의미를 통일한다.
-- 핵심 CTA는 화면당 하나를 유지하고, Reduce Motion에서는 opacity 중심의
-  짧은 전환으로 축소한다.
-- Apple navigation·privacy 원칙과 Things의 직접 조작 흐름을 판정 기준으로
-  사용하되 UI를 복제하지 않는다.
+- 눈금은 약 24개로 줄이고 주황색 눈금과 중앙 숫자가 모두 남은 시간을
+  나타낸다. 시간 경과에 따라 눈금은 시계 방향으로 사라진다.
+- 단계 표시는 얇은 3구간으로 교체하고 시작 CTA에는 실제 시간을 표시한다.
+- 실행 중 primary CTA는 `끝냈어요`, 일시정지는 secondary text action이다.
+- 초과 상태는 `+0:12` 형식과 얇은 적색 테두리만 사용한다.
+- timer duration·state machine·timestamp 복구·event·proof·EXP 계약은
+  변경하지 않는다.
+- Node 회귀 테스트 88개와 TypeScript typecheck는 통과했다. iPhone 13 mini
+  실제 화면, background/foreground, Android는 미검증이다.
 
-### MB-25. 실행 기록의 정보 밀도
+### MB-25A. Task Chunking Quality Contract
 
-- 반복 카드 외곽선을 줄이고 실행 시간과 완료 시점을 먼저 읽히게 한다.
-- 사진·보조 지표는 기록의 존재를 방해하지 않는 2차 정보로 둔다.
-- Structured의 단일 시간축 구조를 정보 순서 참고로만 사용한다.
+- `BarrierType`, `StepRole`, `ActionPrimitive`, hard Gate와 고정 평가함수를
+  canonical 문서와 TypeScript 타입으로 고정한다.
+- 모든 후보는 정확히 3단계이며 `CONTACT → NARROW → PRODUCE`를 따른다.
+- 평가 가중치와 penalty는 `local_chunking_policy_v0.2`의 초기 가설로
+  명시한다.
+- 이 MB에서는 런타임 선택 결과를 바꾸지 않는다.
 
-### MB-26. 완료 기록과 사진의 역할
+### MB-25B. Deterministic Local Chunking Engine v0.2
 
-- 완료 자체가 1차 기록이며 사진 유무가 성공 여부를 바꾸지 않게 한다.
-- 사진 미리보기·다시 찍기·삭제의 관계를 한 덩어리로 읽히게 한다.
-- Day One의 콘텐츠 우선 원칙을 참고하되 저널 UI나 브랜드 표현은 복제하지
-  않는다.
+- 입력 정규화부터 안전 분류, 제한 신호 추출, 장벽 분류, 2~4개 후보 생성,
+  Gate, 고정 점수, 최종 선택, 낮은 확신 fallback을 순수 함수 경계로
+  분리한다.
+- 같은 정규화 입력과 같은 policy version은 항상 같은 결과를 반환한다.
+- descriptor에는 policy·barrier·confidence·후보 수·전략·primitive·fallback
+  여부만 포함하며 raw task text를 저장하지 않는다.
+- 원격 계획 경로·consent gate·8초 timeout·remote validator와 15/60/120초
+  정책은 변경하지 않는다.
+
+### MB-25C. Quality Fixture Suite
+
+- 실제 한국어 입력 30~50개를 추가하고 각 BarrierType을 최소 5개 포함한다.
+- 구조 계약, 역할 순서, 관찰 가능성, 중복·모호 동사 부재, timer 정책,
+  낮은 확신 fallback을 검증한다.
+- golden 10~15개는 v0.1·v0.2 후보·Gate·점수·최종 선택·한계를 비교하는
+  보고서로 남긴다.
+
+### MB-26. 로컬 실행 기록 월간 탐색기
+
+- MB-25 전체와 물리 iPhone Smoke 통과 뒤에만 시작한다.
+- 기존 `completedAt`을 월간 날짜 그리드와 선택 날짜별 기존 기록 필터로
+  탐색한다.
+- OS Calendar, streak, 실패 경고, weekly goal, 동기화, 새 KPI는 제외한다.
+
+### MB-27. EXP 역할 결정
+
+- +30 EXP와 멱등성은 유지하되 기록 화면은 완료 횟수를 primary로 둔다.
+- EXP를 난이도·timer·기능 잠금과 연결하지 않는다.
+- 유지·축소·대체 선택지를 decision record로 작성하고 결정 전 레벨 UI나
+  보상을 구현하지 않는다.
 
 ## 14. 레퍼런스 적용 규칙
 
@@ -745,9 +778,9 @@ P0 코드 누락은 현재 대조에서 발견되지 않았고, 카메라·햅�
 
 | 레퍼런스 | 사용하는 판단 | 적용 MB | 복제하지 않는 것 |
 | --- | --- | --- | --- |
-| Apple HIG | 이동 방향, 적시 권한, 글자·버튼 기본 관례 | MB-23~24 | 시스템 앱의 화면 구성 자체 |
+| Apple HIG | 적시 권한, 글자·버튼 기본 관례 | MB-23~24 | 시스템 앱의 화면 구성 자체 |
 | Things | 현재 행동과 다음 이동의 직접성 | MB-24 | 내비게이션·리스트 외형 |
-| Structured | 시간순 정보와 반복 행의 읽기 순서 | MB-25 | 타임라인 UI와 색상 체계 |
+| Structured | 날짜별 기록 탐색의 읽기 순서 | MB-26 | 타임라인 UI와 색상 체계 |
 | Day One | 완료 콘텐츠 우선, 사진의 보조적 역할 | MB-23·26 | 저널 카드·브랜드 문법 |
 | Startio canonical·행동 계약 | 안전, 정확히 3단계, 단일 행동, local-only | 모든 MB | 외부 제품 기준으로 대체 불가 |
 
@@ -760,6 +793,7 @@ P0 코드 누락은 현재 대조에서 발견되지 않았고, 카메라·햅�
 5. 레퍼런스와 닮았다는 이유만으로 새 화면·dependency·상호작용을 추가하지
    않는다.
 
-MB-21~23 다음에는 물리 iPhone Smoke를 먼저 수행한다. 실기기에서 재현된
-결함만 P0로 승격하며, 이상이 없을 때 MB-24부터 다시 제품 단위 loop를
-이어간다.
+MB-25A~25C 다음에는 물리 iPhone Smoke를 수행한다. 실기기에서 재현된
+결함만 P0로 승격하며, 이상이 없을 때 MB-26부터 제품 단위 loop를 이어간다.
+각 MB는 구현 → 자동 QA → 별도 Lore commit·push → `$explain-diff` HTML
+누적 순서로 닫는다.

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MB-24: 남은 시간이 한 방향으로 읽히는 타이머</title>
+<style>
+  :root {
+    --bg: #fafaf8; --fg: #1a1a1a; --accent: #b5541f; --muted: #6b6b6b;
+    --code-bg: #282c34; --code-fg: #e6e6e6; --callout-bg: #fff4e8; --border: #e0ddd6;
+  }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--fg);
+    max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 6rem; line-height: 1.65; }
+  h1 { font-size: 1.9rem; border-bottom: 3px solid var(--accent); padding-bottom: .5rem; }
+  h2 { font-size: 1.4rem; margin-top: 3rem; color: var(--accent); }
+  h3 { font-size: 1.1rem; margin-top: 1.8rem; }
+  code { font-family: 'SF Mono', Consolas, monospace; background: #eee; padding: .1rem .3rem; border-radius: 3px; font-size: .92em; }
+  pre { background: var(--code-bg); color: var(--code-fg); padding: 1rem 1.2rem; border-radius: 8px;
+    overflow-x: auto; white-space: pre-wrap; font-family: 'SF Mono', Consolas, monospace; font-size: .88rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: inherit; }
+  .callout { background: var(--callout-bg); border-left: 4px solid var(--accent); padding: .9rem 1.2rem;
+    border-radius: 0 6px 6px 0; margin: 1.2rem 0; }
+  .toc { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; margin: 1.5rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc ul { margin: .3rem 0; }
+  .diagram { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem;
+    margin: 1.2rem 0; font-family: 'SF Mono', Consolas, monospace; font-size: .85rem; }
+  .flow { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; justify-content: center; padding: .5rem 0; }
+  .box { border: 2px solid var(--accent); border-radius: 8px; padding: .6rem 1rem; background: #fdf6ee; text-align: center; min-width: 120px; }
+  .box.fail { border-color: #b91c1c; background: #fef2f2; }
+  .arrow { font-size: 1.4rem; color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+  th, td { border: 1px solid var(--border); padding: .5rem .7rem; text-align: left; }
+  th { background: #f0ede6; }
+  .quiz-q { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+  .quiz-opt { display: block; width: 100%; text-align: left; padding: .6rem 1rem; margin: .4rem 0;
+    border: 1px solid var(--border); border-radius: 6px; background: #fff; cursor: pointer; font-family: inherit; font-size: .95rem; }
+  .quiz-opt:hover { background: #f5f2ec; }
+  .feedback { display: none; margin-top: .6rem; padding: .6rem 1rem; border-radius: 6px; font-size: .9rem; }
+  .feedback.correct { background: #ecfdf3; color: #166534; border-left: 3px solid #16a34a; }
+  .feedback.incorrect { background: #fef2f2; color: #991b1b; border-left: 3px solid #dc2626; }
+  .badge { display: inline-block; font-size: .75rem; padding: .15rem .5rem; border-radius: 10px; font-family: sans-serif; }
+  .badge.new { background: #dcfce7; color: #166534; }
+  @media (max-width: 600px) { body { padding: 1rem; } .flow { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<h1>MB-24: 남은 시간이 한 방향으로 읽히는 타이머</h1>
+<p style="color:var(--muted); margin-top:-.5rem;">Startio · 2026-07-28 · 8343cf8 → working tree</p>
+
+<div class="toc">
+<strong>Contents</strong>
+<ul>
+  <li><a href="#background">Background</a></li>
+  <li><a href="#intuition">Core intuition</a></li>
+  <li><a href="#walkthrough">Code walkthrough</a></li>
+  <li><a href="#verification">Verification and gaps</a></li>
+  <li><a href="#quiz">Quiz</a></li>
+</ul>
+</div>
+
+<h2 id="background">Background</h2>
+<p>기존 타이머는 중앙 숫자가 남은 시간을 보여주지만 48개 눈금은 진행률처럼 채워져, 같은 원 안에서 두 요소가 반대 방향의 의미로 읽힐 수 있었다. MB-24는 시간 정책이나 상태 머신을 건드리지 않고 표시 계층만 교정한다.</p><div class="callout"><strong>고정 계약</strong><br>15초·60초·120초 duration, timestamp 복구, timer event 이름과 발생 조건, proof 접근 조건, EXP 지급 조건은 변경하지 않았다.</div>
+
+<h2 id="intuition">Core intuition</h2>
+<p>숫자와 눈금은 모두 같은 질문에 답한다: “얼마나 남았나?” 시간이 흐르면 숫자는 줄고 주황색 눈금도 시계 방향으로 사라진다.</p><div class="diagram"><div class="node">시작<br><strong>100% · 24 segments</strong></div><div class="arrow">→</div><div class="node">진행<br><strong>50% · 12 segments</strong></div><div class="arrow">→</div><div class="node">종료<br><strong>0% · 0 segments</strong></div></div><p>단계 정보는 “1 / 3” 숫자 경쟁 대신 얇은 3구간 표시로 낮췄고, CTA는 현재 상태에서 사용자가 할 수 있는 행동을 직접 말한다.</p>
+
+<h2 id="walkthrough">Code walkthrough</h2>
+<h3>1. 표시 계산을 순수 함수로 분리</h3><pre><code>getElapsedSegmentCount(progress)
+getRemainingPercent(progress)
+formatTimerStartLabel(seconds)</code></pre><p>진행률 clamp, 24구간 변환, 접근성용 남은 비율, 15초·1분·2분 CTA 문구가 렌더 코드 밖에서 결정된다.</p><h3>2. 타이머 화면의 의미 통일</h3><p><code>TimerDial</code>은 경과 구간을 중립색으로 바꾸고 남은 구간만 주황색으로 유지한다. 초과 상태는 추가 색 효과 없이 <code>+0:12</code>와 얇은 적색 테두리만 남긴다.</p><h3>3. 상태 위계 정리</h3><p>시작 전 CTA는 실제 시간을 말하고, 실행 중 primary CTA는 <code>끝냈어요</code>다. 일시정지는 secondary text action으로 유지되며 완료 조건은 원 가까이 한 줄로 배치된다.</p><h3>4. 계획 문서 동기화</h3><p>실행 계획을 새 우선순위 MB-24, MB-25A/B/C, MB-26, MB-27로 갱신하고 각 MB의 별도 commit·push·HTML 보고서 loop를 명시했다.</p>
+
+<h2 id="verification">Verification and gaps</h2>
+<table><thead><tr><th>항목</th><th>결과</th></tr></thead><tbody><tr><td>MB-24 표시 로직 테스트</td><td>통과</td></tr><tr><td>timer/session 회귀 테스트</td><td>통과</td></tr><tr><td>모바일 전체 Node 테스트</td><td>88/88 통과</td></tr><tr><td>TypeScript typecheck</td><td>통과</td></tr><tr><td>diff whitespace</td><td>통과</td></tr><tr><td>iPhone 13 mini 시각·background 복구</td><td>미검증</td></tr><tr><td>Android 360×800·TalkBack</td><td>지시대로 미검증</td></tr></tbody></table><div class="callout"><strong>Scope deviation</strong><br>없음. 새 dependency와 별도 자동화 하네스를 추가하지 않았다. simulator 전체 네이티브 재빌드는 과도한 소요 때문에 중단했고, 시각 verdict는 실제 타이머 캡처가 없어 통과 처리하지 않았다.</div>
+
+<h2 id="quiz">Quiz</h2>
+
+<div class="quiz-q">
+<p><strong>MB-24에서 주황색 눈금은 무엇을 뜻하는가?</strong></p>
+<button class="quiz-opt" data-correct="false">이미 경과한 시간</button>
+<button class="quiz-opt" data-correct="false">획득 예정 EXP</button>
+<button class="quiz-opt" data-correct="true">남은 시간</button>
+</div>
+
+<div class="quiz-q">
+<p><strong>시간이 흐르면 눈금은 어떻게 변하는가?</strong></p>
+<button class="quiz-opt" data-correct="false">반시계 방향으로 추가된다.</button>
+<button class="quiz-opt" data-correct="true">시계 방향으로 사라진다.</button>
+<button class="quiz-opt" data-correct="false">항상 24개가 주황색이다.</button>
+</div>
+
+<div class="quiz-q">
+<p><strong>실행 중 primary CTA 문구는?</strong></p>
+<button class="quiz-opt" data-correct="true">끝냈어요</button>
+<button class="quiz-opt" data-correct="false">다음 단계</button>
+<button class="quiz-opt" data-correct="false">이 단계 완료</button>
+</div>
+
+<div class="quiz-q">
+<p><strong>MB-24에서 바꾸지 않은 계약은?</strong></p>
+<button class="quiz-opt" data-correct="false">단계 진행 표시</button>
+<button class="quiz-opt" data-correct="true">timer duration과 상태 머신</button>
+<button class="quiz-opt" data-correct="false">눈금 개수</button>
+</div>
+
+<div class="quiz-q">
+<p><strong>현재 남은 검증 공백은?</strong></p>
+<button class="quiz-opt" data-correct="true">iPhone 13 mini 실기기와 Android</button>
+<button class="quiz-opt" data-correct="false">TypeScript typecheck</button>
+<button class="quiz-opt" data-correct="false">순수 함수 단위 테스트</button>
+</div>
+
+<script>
+document.querySelectorAll('.quiz-q').forEach(q => {
+  q.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const correct = opt.dataset.correct === 'true';
+      let fb = opt.nextElementSibling;
+      if (!fb || !fb.classList.contains('feedback')) {
+        fb = document.createElement('div');
+        fb.className = 'feedback';
+        opt.insertAdjacentElement('afterend', fb);
+      }
+      fb.textContent = correct ? '\u2705 Correct.' : '\u274c Not quite \u2014 reread the section above.';
+      fb.className = 'feedback ' + (correct ? 'correct' : 'incorrect');
+      fb.style.display = 'block';
+    });
+  });
+});
+</script>
+
+</body>
+</html>

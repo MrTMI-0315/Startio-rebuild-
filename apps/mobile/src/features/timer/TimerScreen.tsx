@@ -14,9 +14,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useThemeTokens, type ThemeTokens } from '@/design/tokens';
 import { useStepFeedback } from '@/features/timer/useStepFeedback';
+import {
+  formatTimerStartLabel,
+  getElapsedSegmentCount,
+  getRemainingPercent,
+  TIMER_DIAL_SEGMENT_COUNT,
+} from '@/features/timer/timerPresentation';
 import { useTimer } from '@/features/timer/useTimer';
 
-const DIAL_TICKS = Array.from({ length: 48 }, (_, index) => index);
+const DIAL_SEGMENTS = Array.from(
+  { length: TIMER_DIAL_SEGMENT_COUNT },
+  (_, index) => index,
+);
 
 function formatClock(milliseconds: number, prefix = ''): string {
   const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000));
@@ -43,16 +52,13 @@ function TimerDial({
   tokens: ThemeTokens;
 }) {
   const styles = useMemo(() => createStyles(tokens), [tokens]);
-  const size = tokens.isLargeText ? 268 : 244;
+  const size = tokens.isLargeText ? 244 : 220;
   const center = size / 2;
   const radius = size / 2 - 11;
-  const activeTickCount = Math.round(progress * DIAL_TICKS.length);
+  const elapsedSegmentCount = getElapsedSegmentCount(progress);
+  const remainingPercent = getRemainingPercent(progress);
   const activeColor =
-    urgency === 'overtime'
-      ? tokens.colors.destructive
-      : urgency === 'urgent'
-        ? tokens.colors.cautionText
-        : tokens.colors.focus;
+    urgency === 'urgent' ? tokens.colors.cautionText : tokens.colors.focus;
 
   return (
     <View
@@ -61,7 +67,7 @@ function TimerDial({
       accessibilityValue={{
         min: 0,
         max: 100,
-        now: Math.round(progress * 100),
+        now: remainingPercent,
       }}
       style={[
         styles.dial,
@@ -70,17 +76,19 @@ function TimerDial({
         urgency === 'overtime' && styles.dialOvertime,
       ]}
     >
-      {DIAL_TICKS.map((tick) => {
-        const angle = (tick / DIAL_TICKS.length) * Math.PI * 2;
-        const rotation = `${(tick / DIAL_TICKS.length) * 360}deg`;
+      {DIAL_SEGMENTS.map((segment) => {
+        const angle = (segment / DIAL_SEGMENTS.length) * Math.PI * 2;
+        const rotation = `${(segment / DIAL_SEGMENTS.length) * 360}deg`;
+        const isRemaining =
+          urgency !== 'overtime' && segment >= elapsedSegmentCount;
         return (
           <View
-            key={tick}
+            key={segment}
             style={[
-              styles.dialTick,
+              styles.dialSegment,
               {
                 backgroundColor:
-                  tick < activeTickCount ? activeColor : tokens.colors.border,
+                  isRemaining ? activeColor : tokens.colors.border,
                 left: center + radius * Math.sin(angle) - 1.5,
                 top: center - radius * Math.cos(angle) - 6,
                 transform: [{ rotate: rotation }],
@@ -96,6 +104,40 @@ function TimerDial({
       ]}>
         {displayTime}
       </Text>
+    </View>
+  );
+}
+
+function StepProgress({
+  currentStepOrder,
+  completed,
+  tokens,
+}: {
+  currentStepOrder: number;
+  completed: boolean;
+  tokens: ThemeTokens;
+}) {
+  const styles = useMemo(() => createStyles(tokens), [tokens]);
+  const visibleStep = completed ? 3 : currentStepOrder;
+
+  return (
+    <View
+      accessibilityLabel={
+        completed ? '3단계 모두 완료' : `전체 3단계 중 ${currentStepOrder}단계`
+      }
+      accessibilityRole="progressbar"
+      accessibilityValue={{ min: 1, max: 3, now: visibleStep }}
+      style={styles.stepProgress}
+    >
+      {[1, 2, 3].map((stepOrder) => (
+        <View
+          key={stepOrder}
+          style={[
+            styles.stepProgressSegment,
+            stepOrder <= visibleStep && styles.stepProgressSegmentActive,
+          ]}
+        />
+      ))}
     </View>
   );
 }
@@ -193,9 +235,9 @@ export function TimerScreen() {
 
   const primaryLabel =
     timer.timerState.status === 'idle'
-      ? `${timer.timerState.currentStepOrder}단계 시작`
+      ? formatTimerStartLabel(step.timerSeconds)
       : timer.timerState.status === 'running'
-        ? '이 단계 완료'
+        ? '끝냈어요'
         : timer.timerState.status === 'paused'
           ? '계속하기'
           : timer.timerState.status === 'completed'
@@ -228,24 +270,11 @@ export function TimerScreen() {
     <SafeAreaView style={styles.safeArea} testID="startio-timer-screen">
       <View style={styles.page}>
         <View style={styles.topBar}>
-          <Text
-            accessibilityLabel={
-              timer.timerState.status === 'completed'
-                ? '3단계 모두 완료'
-                : `전체 3단계 중 ${timer.timerState.currentStepOrder}단계`
-            }
-            accessibilityRole="progressbar"
-            accessibilityValue={{
-              min: 0,
-              max: 3,
-              now: timer.timerState.completedStepCount,
-            }}
-            style={styles.progressText}
-          >
-            {timer.timerState.status === 'completed'
-              ? '3단계 완료'
-              : `${timer.timerState.currentStepOrder} / 3`}
-          </Text>
+          <StepProgress
+            completed={timer.timerState.status === 'completed'}
+            currentStepOrder={timer.timerState.currentStepOrder}
+            tokens={tokens}
+          />
           {!isTerminal ? (
             <Pressable
               accessibilityHint="현재 진행을 끝내고 시작 화면으로 돌아갑니다."
@@ -298,7 +327,12 @@ export function TimerScreen() {
               ) : timer.timerState.status === 'paused' ? (
                 <Text style={styles.pausedText}>일시정지</Text>
               ) : null}
-              <Text style={styles.condition}>{step.completionCondition}</Text>
+              <Text
+                numberOfLines={tokens.isLargeText ? 2 : 1}
+                style={styles.condition}
+              >
+                {step.completionCondition}
+              </Text>
             </>
           ) : (
             <Text style={styles.condition}>
@@ -378,11 +412,21 @@ function createStyles(tokens: ThemeTokens) {
       alignItems: 'center',
       justifyContent: 'space-between',
     },
-    progressText: {
-      color: tokens.colors.textSecondary,
-      fontFamily: tokens.font.uiBold,
-      fontSize: tokens.type.label,
-      fontVariant: ['tabular-nums'],
+    stepProgress: {
+      minWidth: 92,
+      minHeight: tokens.metrics.touchTarget,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    stepProgressSegment: {
+      width: 24,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: tokens.colors.border,
+    },
+    stepProgressSegmentActive: {
+      backgroundColor: tokens.colors.focus,
     },
     abandonButton: {
       minHeight: tokens.metrics.touchTarget,
@@ -417,7 +461,7 @@ function createStyles(tokens: ThemeTokens) {
       flexGrow: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      gap: tokens.spacing.md,
+      gap: tokens.spacing.sm,
       paddingHorizontal: tokens.spacing.xs,
       paddingBottom: tokens.spacing.xl,
     },
@@ -436,7 +480,7 @@ function createStyles(tokens: ThemeTokens) {
       letterSpacing: -0.4,
     },
     dial: {
-      marginTop: tokens.spacing.lg,
+      marginTop: tokens.spacing.md,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: tokens.colors.surface,
@@ -448,7 +492,7 @@ function createStyles(tokens: ThemeTokens) {
       borderWidth: 1,
       borderColor: tokens.colors.destructive,
     },
-    dialTick: {
+    dialSegment: {
       position: 'absolute',
       width: 3,
       height: 12,
@@ -480,6 +524,7 @@ function createStyles(tokens: ThemeTokens) {
     },
     condition: {
       maxWidth: 300,
+      marginTop: tokens.spacing.xs,
       color: tokens.colors.textSecondary,
       fontFamily: tokens.font.uiRegular,
       fontSize: tokens.type.body,
