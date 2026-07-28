@@ -47,7 +47,7 @@
 <body>
 
 <h1>Startio P1 완료 화면 교정: 질문과 결과를 분리한 작은 제품 단위</h1>
-<p style="color:var(--muted); margin-top:-.5rem;">작성일 2026-07-28 · 비교 기준 0855a35 → 현재 working tree · Android 미검증 유지</p>
+<p style="color:var(--muted); margin-top:-.5rem;">작성일 2026-07-28 · 비교 기준 0855a35 → 67019dc · Android 미검증 유지</p>
 
 <div class="toc">
 <strong>Contents</strong>
@@ -60,7 +60,7 @@
 </div>
 
 <h2 id="background">배경</h2>
-<div class='callout'><strong>비교 범위</strong><br>기준 revision <code>0855a35</code>에서 현재 working tree까지의 변경 중 <code>CompletionScreen.tsx</code>, <code>PhotoProofPicker.tsx</code>, <code>mb19-product-language.test.mjs</code>, micro-build 상단 상태, Thin Repository Loop 보고 규칙만 설명한다. 작업 시작 전부터 존재하던 Smoke 문서 변경과 Repository Loop 초안은 보존 대상으로 취급하며 이번 제품 구현의 결과로 과장하지 않는다.</div><p>Startio의 완료 흐름은 정확히 세 단계의 타이머가 모두 끝난 뒤 시작된다. 사용자는 선택적으로 사진을 붙이고 완료 기록을 저장한다. 저장 트랜잭션이 성공하면 같은 task와 plan에는 EXP 30이 한 번만 지급되고, 이후 성공 화면이 표시된다.</p><div class='diagram'><div class='flow'><div class='box'>3단계 타이머 완료</div><span class='arrow'>→</span><div class='box'>완료 기록 전 화면</div><span class='arrow'>→</span><div class='box'>proof + EXP 원자적 저장</div><span class='arrow'>→</span><div class='box'>완료 성공 화면</div></div></div><p>기존 화면은 저장 전부터 “세 단계를 마쳤어요”라고 완료를 선언하고, 저장 뒤 다시 “완료했어요”라고 말해 두 번 확인하는 느낌을 만들었다. 사진 선택 면은 muted 배경과 외곽선을 동시에 사용해 정보 카드처럼 무거웠고, 완료 라우트 진입에는 전역 fade만 있어 화면 내용 자체의 짧은 방향성이 없었다.</p><table><thead><tr><th>범위</th><th>현재 상태</th><th>이번 작업의 처리</th></tr></thead><tbody><tr><td>P1 완료 화면</td><td>교정 완료</td><td>질문/결과 언어 분리, 외곽선 감소, 접근성 전환 추가</td></tr><tr><td>P0 카메라·햅틱·모드 유지</td><td>실기기 확인 pending</td><td>연결된 물리 iPhone이 없어 통과로 변경하지 않음</td></tr><tr><td>Android 360×800·TalkBack</td><td>미검증</td><td>별도 재개 지시 전까지 상태 유지</td></tr><tr><td>dependency·자동화 하네스</td><td>변경 없음</td><td>추가하지 않음</td></tr></tbody></table>
+<div class='callout'><strong>비교 범위</strong><br>revision <code>0855a35</code>부터 제품 revision <code>67019dc</code>까지의 변경 중 <code>CompletionScreen.tsx</code>, <code>PhotoProofPicker.tsx</code>, <code>mb19-product-language.test.mjs</code>, micro-build 상단 상태, Thin Repository Loop 보고 규칙만 설명한다. 작업 시작 전부터 존재하던 Smoke 문서 변경과 Repository Loop 초안은 보존 대상으로 취급하며 이번 제품 구현의 결과로 과장하지 않는다.</div><p>Startio의 완료 흐름은 정확히 세 단계의 타이머가 모두 끝난 뒤 시작된다. 사용자는 선택적으로 사진을 붙이고 완료 기록을 저장한다. 저장 트랜잭션이 성공하면 같은 task와 plan에는 EXP 30이 한 번만 지급되고, 이후 성공 화면이 표시된다.</p><div class='diagram'><div class='flow'><div class='box'>3단계 타이머 완료</div><span class='arrow'>→</span><div class='box'>완료 기록 전 화면</div><span class='arrow'>→</span><div class='box'>proof + EXP 원자적 저장</div><span class='arrow'>→</span><div class='box'>완료 성공 화면</div></div></div><p>기존 화면은 저장 전부터 “세 단계를 마쳤어요”라고 완료를 선언하고, 저장 뒤 다시 “완료했어요”라고 말해 두 번 확인하는 느낌을 만들었다. 사진 선택 면은 muted 배경과 외곽선을 동시에 사용해 정보 카드처럼 무거웠고, 완료 라우트 진입에는 전역 fade만 있어 화면 내용 자체의 짧은 방향성이 없었다.</p><table><thead><tr><th>범위</th><th>현재 상태</th><th>이번 작업의 처리</th></tr></thead><tbody><tr><td>P1 완료 화면</td><td>교정 완료</td><td>질문/결과 언어 분리, 외곽선 감소, 접근성 전환 추가</td></tr><tr><td>P0 카메라·햅틱·모드 유지</td><td>실기기 확인 pending</td><td>연결된 물리 iPhone이 없어 통과로 변경하지 않음</td></tr><tr><td>Android 360×800·TalkBack</td><td>미검증</td><td>별도 재개 지시 전까지 상태 유지</td></tr><tr><td>dependency·자동화 하네스</td><td>변경 없음</td><td>추가하지 않음</td></tr></tbody></table>
 
 <h2 id="intuition">핵심 직관</h2>
 <h3>질문은 저장 전에, 성공 선언은 저장 뒤에</h3><p>사용자가 세 단계를 실행했다는 사실과 그 실행을 Startio 기록으로 확정했다는 사실은 다르다. 저장 전 화면은 결정을 묻고, 저장 후 화면은 저장 결과와 보상을 알려야 한다.</p><table><thead><tr><th>상태</th><th>이전 표현</th><th>새 표현</th><th>사용자에게 주는 의미</th></tr></thead><tbody><tr><td>저장 전</td><td>세 단계를 마쳤어요</td><td>완료를 기록할까요?</td><td>아직 되돌릴 수 있는 선택</td></tr><tr><td>저장 후</td><td>완료했어요</td><td>완료했어요</td><td>저장과 EXP 지급이 끝난 결과</td></tr></tbody></table><h3>그룹은 선의 개수가 아니라 의미 차이로 만든다</h3><p>실행 시간은 얇은 위·아래 구분선으로, 사진 선택은 muted fill로, Primary Action은 파스텔 오렌지 면으로 구분한다. 사진 선택 영역에서는 배경만으로 충분한 affordance가 있으므로 외곽선을 제거해 CTA와 시간 정보가 더 먼저 읽히게 했다.</p><div class='diagram'><div class='flow'><div class='box'>시간<br><small>hairline separator</small></div><span class='arrow'>→</span><div class='box'>선택 사진<br><small>muted surface</small></div><span class='arrow'>→</span><div class='box'>완료 저장<br><small>single primary action</small></div></div></div><h3>움직임은 의미를 보조하고 접근성 설정을 이기지 않는다</h3><p>저장 전 내용은 180ms 동안 opacity 0→1, translateY 8→0으로 들어온다. 시스템의 동작 줄이기가 켜져 있으면 애니메이션을 실행하지 않고 최종 상태를 즉시 설정한다.</p><div class='diagram'><div class='flow'><div class='box'>Reduce Motion 꺼짐</div><span class='arrow'>→</span><div class='box'>180ms fade + 8pt 이동</div></div><div class='flow'><div class='box'>Reduce Motion 켜짐</div><span class='arrow'>→</span><div class='box'>즉시 opacity 1 / translateY 0</div></div></div>
@@ -82,37 +82,37 @@ if (tokens.reduceMotion) {
 
 <div class="quiz-q">
 <p><strong>저장 전 제목을 “완료를 기록할까요?”로 바꾼 가장 중요한 이유는 무엇인가?</strong></p>
-<button class="quiz-opt" data-correct="false">한국어 제목의 글자 수를 무조건 줄여 모든 화면을 한 줄로 만들기 위해서다.</button>
-<button class="quiz-opt" data-correct="true">저장 전에는 사용자의 선택을 묻고, 실제 저장 뒤에만 성공을 선언해 상태 의미를 분리하기 위해서다.</button>
 <button class="quiz-opt" data-correct="false">completion transaction 없이도 EXP 30을 먼저 보여주기 위해서다.</button>
+<button class="quiz-opt" data-correct="true">저장 전에는 사용자의 선택을 묻고, 실제 저장 뒤에만 성공을 선언해 상태 의미를 분리하기 위해서다.</button>
+<button class="quiz-opt" data-correct="false">한국어 제목의 글자 수를 무조건 줄여 모든 화면을 한 줄로 만들기 위해서다.</button>
 </div>
 
 <div class="quiz-q">
 <p><strong>사진 선택 영역에서 외곽선을 제거해도 상호작용 의미가 유지되는 이유는 무엇인가?</strong></p>
 <button class="quiz-opt" data-correct="false">외곽선을 제거하면 React Native가 자동으로 시스템 버튼 테두리를 추가하기 때문이다.</button>
-<button class="quiz-opt" data-correct="true">muted 배경, radius, 여백, 아이콘과 텍스트 위계가 이미 하나의 선택 면임을 충분히 나타내기 때문이다.</button>
 <button class="quiz-opt" data-correct="false">사진 선택은 더 이상 누를 수 없는 읽기 전용 정보로 바뀌었기 때문이다.</button>
+<button class="quiz-opt" data-correct="true">muted 배경, radius, 여백, 아이콘과 텍스트 위계가 이미 하나의 선택 면임을 충분히 나타내기 때문이다.</button>
 </div>
 
 <div class="quiz-q">
 <p><strong>Reduce Motion이 활성화됐을 때 저장 전 화면은 어떻게 동작하는가?</strong></p>
-<button class="quiz-opt" data-correct="true">opacity 1과 translateY 0을 즉시 설정해 같은 최종 화면을 움직임 없이 보여준다.</button>
-<button class="quiz-opt" data-correct="false">180ms 이동은 유지하고 opacity 애니메이션만 제거한다.</button>
 <button class="quiz-opt" data-correct="false">화면 전체를 숨기고 사용자가 설정을 끌 때까지 기다린다.</button>
+<button class="quiz-opt" data-correct="false">180ms 이동은 유지하고 opacity 애니메이션만 제거한다.</button>
+<button class="quiz-opt" data-correct="true">opacity 1과 translateY 0을 즉시 설정해 같은 최종 화면을 움직임 없이 보여준다.</button>
 </div>
 
 <div class="quiz-q">
 <p><strong>이번 작업에서 카메라·햅틱·화면 모드 유지가 완료로 바뀌지 않은 이유는 무엇인가?</strong></p>
+<button class="quiz-opt" data-correct="true">코드와 Simulator 검증만으로 물리 카메라, 촉각 강도, 앱 재실행 유지의 실기기 증거를 대신할 수 없기 때문이다.</button>
 <button class="quiz-opt" data-correct="false">Android 검증을 먼저 완료해야만 iPhone을 연결할 수 있기 때문이다.</button>
 <button class="quiz-opt" data-correct="false">해당 기능의 TypeScript 구현이 저장소에서 모두 삭제됐기 때문이다.</button>
-<button class="quiz-opt" data-correct="true">코드와 Simulator 검증만으로 물리 카메라, 촉각 강도, 앱 재실행 유지의 실기기 증거를 대신할 수 없기 때문이다.</button>
 </div>
 
 <div class="quiz-q">
 <p><strong>갱신된 Thin Repository Loop에서 $explain-diff 보고서의 비교 기준은 어떻게 선택하는가?</strong></p>
 <button class="quiz-opt" data-correct="true">commit 전에는 관련 working-tree diff, commit 후에는 해당 revision 범위를 명시한다.</button>
-<button class="quiz-opt" data-correct="false">항상 저장소 최초 commit부터 전체 이력을 비교해 가장 긴 보고서를 만든다.</button>
 <button class="quiz-opt" data-correct="false">비교 기준은 보고서에 쓰지 않고 대화 기록으로만 추정하게 한다.</button>
+<button class="quiz-opt" data-correct="false">항상 저장소 최초 commit부터 전체 이력을 비교해 가장 긴 보고서를 만든다.</button>
 </div>
 
 <script>

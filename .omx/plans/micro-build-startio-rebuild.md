@@ -2,10 +2,10 @@
 
 - status: implementation-plan
 - updated: 2026-07-28
-- source_revision: 0855a35 기반 working tree
+- source_revision: 67019dc
 - authority: canonical 문서를 실제 제품 수직 기능으로 분해한 실행 보조 계획
 - supersedes: 2026-07-23의 MB-01~MB-28 기반·화면 분리 계획
-- current_checkpoint: 기준 커밋 `0855a35`에서 남은 P0 실기기 항목의 증거를 재점검했으나 연결된 물리 iPhone이 없어 카메라 직접 실행·햅틱·화면 모드 재실행 유지는 계속 pending이다. 첫 P1 제품 단위로 완료 저장 전·후 역할, 사진 선택 면의 테두리 밀도, Reduce Motion 대응 진입 전환을 교정했고 타입체크·82개 모바일 회귀 테스트·iPhone 16e Simulator Release 빌드·visual verdict 93점을 통과했다.
+- current_checkpoint: 제품 revision `67019dc`에서 남은 P0 실기기 항목의 증거를 재점검했으나 연결된 물리 iPhone이 없어 카메라 직접 실행·햅틱·화면 모드 재실행 유지는 계속 pending이다. 첫 P1 제품 단위로 완료 저장 전·후 역할, 사진 선택 면의 테두리 밀도, Reduce Motion 대응 진입 전환을 교정했고 타입체크·82개 모바일 회귀 테스트·iPhone 16e Simulator Release 빌드·visual verdict 93점을 통과했다.
 - next_build: P1의 다음 작은 제품 단위로 실행 기록 화면의 반복 행과 핵심 시간값 위계를 교정한다. 물리 iPhone이 연결되면 같은 기준에서 카메라·햅틱·화면 모드 유지 Smoke를 우선 판정하고, Android 동등성 검증은 별도 재개 결정 전까지 명시적 미검증으로 유지한다.
 - open_questions: 카메라·햅틱·화면 모드 유지가 실제 iPhone에서 의도대로 동작하는가; 사진 미리보기와 큰 글자 조합에서도 완료 화면의 수직 밀도가 유지되는가; Android 360×800·TalkBack 검증을 언제 재개할 것인가.
 
