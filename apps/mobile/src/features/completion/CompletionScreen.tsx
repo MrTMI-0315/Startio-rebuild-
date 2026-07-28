@@ -48,6 +48,8 @@ export function CompletionScreen() {
     useState<ProofPhotoSource | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const checkOpacity = useRef(new Animated.Value(0)).current;
+  const checkTranslateY = useRef(new Animated.Value(8)).current;
   const successOpacity = useRef(new Animated.Value(0)).current;
   const successScale = useRef(new Animated.Value(0.92)).current;
   const rewardOpacity = useRef(new Animated.Value(0)).current;
@@ -71,6 +73,53 @@ export function CompletionScreen() {
       router.replace(timerState ? '/timer' : '/');
     }
   }, [isHydrated, plan, router, timerState]);
+
+  useEffect(() => {
+    if (
+      !isHydrated ||
+      !plan ||
+      timerState?.status !== 'completed' ||
+      completionRecord
+    ) {
+      return;
+    }
+
+    if (tokens.reduceMotion) {
+      checkOpacity.setValue(1);
+      checkTranslateY.setValue(0);
+      return;
+    }
+
+    checkOpacity.setValue(0);
+    checkTranslateY.setValue(8);
+    Animated.parallel([
+      Animated.timing(checkOpacity, {
+        duration: 180,
+        easing: Easing.out(Easing.cubic),
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.timing(checkTranslateY, {
+        duration: 180,
+        easing: Easing.out(Easing.cubic),
+        toValue: 0,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    return () => {
+      checkOpacity.stopAnimation();
+      checkTranslateY.stopAnimation();
+    };
+  }, [
+    checkOpacity,
+    checkTranslateY,
+    completionRecord,
+    isHydrated,
+    plan,
+    timerState?.status,
+    tokens.reduceMotion,
+  ]);
 
   useEffect(() => {
     if (!completionRecord) {
@@ -240,16 +289,21 @@ export function CompletionScreen() {
   return (
     <SafeAreaView style={styles.safeArea} testID="startio-completion-check">
       <View style={styles.page}>
-        <ScrollView
+        <Animated.ScrollView
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
+          style={{
+            opacity: checkOpacity,
+            transform: [{ translateY: checkTranslateY }],
+          }}
         >
-          <Text style={styles.eyebrow}>마지막 확인</Text>
+          <Text style={styles.eyebrow}>실행 기록</Text>
           <Text accessibilityRole="header" style={styles.title}>
-            세 단계를 마쳤어요
+            완료를 기록할까요?
           </Text>
           <Text style={styles.description}>
-            완료를 저장하면 EXP {TASK_COMPLETION_EXP}을 받아요.
+            실행 시간과 선택한 사진을 이 기기에 저장하고 EXP{' '}
+            {TASK_COMPLETION_EXP}을 받아요.
           </Text>
           {actualMs !== null ? (
             <View style={styles.timingSummary}>
@@ -276,7 +330,7 @@ export function CompletionScreen() {
               {saveError}
             </Text>
           ) : null}
-        </ScrollView>
+        </Animated.ScrollView>
 
         <Pressable
           accessibilityHint="완료 기록과 EXP를 함께 저장합니다."
@@ -352,6 +406,7 @@ function createStyles(tokens: ThemeTokens) {
       maxWidth: 280,
     },
     eyebrow: {
+      alignSelf: 'center',
       color: tokens.colors.focus,
       fontFamily: tokens.font.uiBold,
       fontSize: tokens.type.label,

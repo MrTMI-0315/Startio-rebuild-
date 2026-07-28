@@ -5,10 +5,21 @@
 이 문서는 기존 MB-12~20의 완료 선언을 그대로 신뢰하지 않고, 실기기에서
 관찰된 사용자 경험을 현재 제품 코드와 다시 대조한 결과다.
 
+## 증거 기준
+
+- verified_revision: `0855a35`
+- device_model: 최종 P0 재검증 시 기록
+- os_version: 최종 P0 재검증 시 기록
+- build_type_version: iOS development build, 최종 재검증 시 build 식별자 기록
+- environment: physical iPhone, local development server
+- owner: Mr TMI
+- evidence_path_or_note: 2026-07-27 실기기 Smoke 캡처와 이 체크리스트
+- not_tested_reason: 카메라 직접 실행·햅틱·화면 모드 재실행 유지와 Android 동등성은 최종 증거 미기록
+
 ## 판정 원칙
 
-- `완료`: 현재 제품 코드와 자동 검증으로 확인했다.
-- `실기기 확인`: 코드는 반영됐지만 물리 기기에서만 최종 판정할 수 있다.
+- `완료`: 현재 revision의 코드와 해당 항목에 필요한 자동·수동 증거로 확인했다.
+- `실기기 확인`: 코드는 반영됐지만 물리 기기 증거가 없어 아직 통과하지 않았다.
 - `교정 필요`: 기능은 동작하지만 사용자가 지적한 품질 기준에 미달한다.
 - 사진은 선택 사항이다. 완료 직후 카메라를 강제로 열지 않는다.
 - 사용자가 `사진으로 남기기`를 누르면 앨범 선택 화면을 거치지 않고 카메라를

@@ -186,8 +186,6 @@ function createStyles(tokens: ThemeTokens) {
       paddingHorizontal: tokens.spacing.md,
       paddingVertical: tokens.spacing.sm,
       borderRadius: tokens.radius.md,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: tokens.colors.border,
       backgroundColor: tokens.colors.surfaceMuted,
     },
     addIcon: {
@@ -227,8 +225,6 @@ function createStyles(tokens: ThemeTokens) {
       gap: tokens.spacing.md,
       padding: tokens.spacing.sm,
       borderRadius: tokens.radius.md,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: tokens.colors.border,
       backgroundColor: tokens.colors.surfaceMuted,
     },
     preview: {

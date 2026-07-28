@@ -61,10 +61,18 @@ test('approved start and completion copy stays aligned with the product flow', (
     new URL('../src/features/completion/PhotoProofPicker.tsx', import.meta.url),
     'utf8',
   );
+  const completionSource = readFileSync(
+    new URL('../src/features/completion/CompletionScreen.tsx', import.meta.url),
+    'utf8',
+  );
 
   assert.match(startSource, /placeholder="한 문장만 적어보세요"/);
   assert.match(startSource, /'첫 행동을 만드는 중…'/);
   assert.match(photoSource, /launchCameraAsync/);
   assert.match(photoSource, /'사진으로 남기기'/);
   assert.match(photoSource, /'앨범에서 선택'/);
+  assert.match(completionSource, /완료를 기록할까요\?/);
+  assert.equal(completionSource.includes('세 단계를 마쳤어요'), false);
+  assert.match(completionSource, /Animated\.ScrollView/);
+  assert.match(completionSource, /tokens\.reduceMotion/);
 });
